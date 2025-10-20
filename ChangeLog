@@ -1,0 +1,30 @@
+// This changelog follows GNU Style <https://www.gnu.org/prep/standards/html_node/Style-of-Change-Logs.html>
+// But you can delete the content if this file and pick any other standard
+// NOTE: copying git log over this file is NOT a ChangeLog! See this: <https://www.gnu.org/prep/standards/html_node/Change-Logs.html>
+// Changelog is a summary of a lot of related commits.
+
+# Template: 
+
+YYYY-MM-DD Name LastName  <email@somewhere>
+
+	High Level description of work done
+
+	* Fine grained description of important things that you want to communicate
+	* Fine grained description of important things that you want to communicate
+
+
+# Example (entries from newest to oldest):
+
+2025-09-26 Florido Paganelli  <florido.paganelli@fysik.lu.se>
+
+	Reviewing content of project template
+
+	* Added ChangeLog.txt with comments and examples
+
+2025-09-25 Florido Paganelli  <florido.paganelli@fysik.lu.se>
+
+	Reviewing content of project template
+
+	* Checking directory structure
+	* Added Workplan.md
+
