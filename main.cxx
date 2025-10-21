@@ -1,15 +1,16 @@
+#include "TCanvas.h"
+#include "TAxis.h"
+#include "include/analysis_and_plotting.h"
 
-#include <iostream>
-int main(int argc, char *argv[]) {
-  std::cout << "I am just a code template, you need to implement the "
-               "functionality you want to use yourself!"
-            << std::endl;
+int main() {
+    TGraphErrors* graph = analysisKO();
 
-  std::cout << "We were passed " << argc
-            << " command line arguments, the first of which was " << argv[0]
-            << std::endl;
-  std::cout << "With a good CLI library, we could use the command line "
-               "arguments to make a useful program."
-            << std::endl;
-  return 0;
+    TCanvas* c1 = new TCanvas("c1", "Temperature Plot", 800, 600);
+    graph->Draw("ALP");
+    graph->GetXaxis()->SetLimits(0, 366);
+    c1->Update();
+
+    c1->SaveAs("temperature_plot.png");
+
+    return 0;
 }
