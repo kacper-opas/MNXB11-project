@@ -28,3 +28,6 @@ awk -F';' 'gsub(/-/, ",", $1)' "$Copy_file" > temp.csv && mv temp.csv "$Copy_fil
 
 # Replace leftover symbols with commas
 sed -e 's/ /,/g' "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
+
+# Add column headers: year, month, day, temperature
+sed -i '1i year,month,day,temperature' "$Copy_file"
