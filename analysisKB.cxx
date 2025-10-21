@@ -3,38 +3,66 @@
 #include <TH1F.h>
 #include <TCanvas.h>
 #include <iostream>
-#include <map>
-//#include "temperature_day.h"  // your class header
+#include <vector>
+#include <cmath>
+#include "TGraph.h"
 
-void convert_to_tree() {
-    std::ifstream infile("smhi-opendata_1_93220_20231007_155708_Karlstad_preprocessed.csv");
+bool isLeapYear(int year) {
+    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
+}
 
- TFile *outfile = new TFile("Karlstad_temperature.root", "RECREATE");
-    TTree *tree = new TTree("tree", "Daily max temperatures for Karlstad");
+int dayOfYear(int year, int month, int day) {
+    int days_in_month[] = {31,28,31,30,31,30,31,31,30,31,30,31};
+    if (isLeapYear(year)) days_in_month[1] = 29;
+    int doy = 0;
+    for (int i = 0; i < month - 1; i++) doy += days_in_month[i];
+    doy += day;
+    return doy;
+}
 
+void analysisKB()
+{
+    std::string karlstadt_tree = "datasets/root_trees/smhi-opendata_1_93220_20231007_155708_Karlstad_preprocessed.root";
+    TFile *file = TFile::Open(karlstadt_tree.c_str(), "READ");
+    TTree *tree = (TTree*)file->Get("tree");
 
-    // --- Connect to class object branch
-    temperature_day *p = nullptr;
-    tree->SetBranchAddress("day", &p);
+    int year, month, day;
+    float temperature;
+    tree->SetBranchAddress("year", &year);
+    tree->SetBranchAddress("month", &month);
+    tree->SetBranchAddress("day", &day);
+    tree->SetBranchAddress("temperature", &temperature);
 
     Int_t N = tree->GetEntries();
-    std::cout << "Entries: " << N << std::endl;
 
-    // --- Data containers
-    std::map<int, double> maxTempPerYear;
-    std::map<int, int> warmestDayPerYear;
+    // --- Use vectors instead of maps
+    std::vector<int> years;
+    std::vector<double> maxTemps;
+    std::vector<int> warmestDays;
 
     // --- Loop over entries to find warmest day per year
     for (Int_t i = 0; i < N; ++i) {
         tree->GetEntry(i);
+        int doy = dayOfYear(year, month, day);
 
-        int year = p->GetYear();
-        int doy  = p->GetDayOfYear();
-        double temp = p->GetTemperature();
+        // Search if this year is already in our list
+        bool found = false;
+        for (size_t j = 0; j < years.size(); ++j) {
+            if (years[j] == year) {
+                found = true;
+                if (temperature > maxTemps[j]) {
+                    maxTemps[j] = temperature;
+                    warmestDays[j] = doy;
+                }
+                break;
+            }
+        }
 
-        if (maxTempPerYear.find(year) == maxTempPerYear.end() || temp > maxTempPerYear[year]) {
-            maxTempPerYear[year] = temp;
-            warmestDayPerYear[year] = doy;
+        // If year not found, add it
+        if (!found) {
+            years.push_back(year);
+            maxTemps.push_back(temperature);
+            warmestDays.push_back(doy);
         }
     }
 
@@ -43,8 +71,9 @@ void convert_to_tree() {
         "Most Frequent Warmest Day of Year;Day of Year;Number of Years",
         365, 0.5, 365.5);
 
-    for (const auto &entry : warmestDayPerYear)
-        hWarmest->Fill(entry.second);
+    // Fill histogram
+    for (size_t i = 0; i < warmestDays.size(); ++i)
+        hWarmest->Fill(warmestDays[i]);
 
     // --- Draw
     TCanvas *c1 = new TCanvas("c1", "Warmest Day of Year", 800, 600);
@@ -53,6 +82,5 @@ void convert_to_tree() {
     hWarmest->Draw();
 
     c1->SaveAs("warmest_days.png");
-
     file->Close();
 }
