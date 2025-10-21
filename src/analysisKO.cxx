@@ -3,8 +3,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TGraphErrors.h"
-#include "TCanvas.h"
-#include "TAxis.h"
+#include "include/analysis_and_plotting.h"
 
 bool isLeapYear(int year) {
     return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
@@ -19,7 +18,7 @@ int dayOfYear(int year, int month, int day) {
     return doy;
 }
 
-void analysisKO()
+TGraphErrors* analysisKO()
 {
     std::string falsterbo_tree = "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
 
@@ -59,10 +58,8 @@ void analysisKO()
     }
 
     TGraphErrors *graph = new TGraphErrors(points, x, y, ex, ey);
-    TCanvas *c1 = new TCanvas("c1", "plot", 800, 600);
-    graph->Draw("ALP");
-    graph->GetXaxis()->SetLimits(0, 366);
-    c1->Update();
 
     file->Close();
+
+    return graph;
 }
