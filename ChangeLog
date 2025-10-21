@@ -25,3 +25,11 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Replace all separators with commas
 	* Delete unnecessary columns and rows 
 	* Create changed copy of file
+
+2025-10-20 Kacper Opas  <ka2557op-s@student.lu.se>
+
+	Reading data into TTrees done.
+
+	* QoL improvements to preprocessing.sh
+	* write.cxx created, which reads the preprocessed data and created TTrees 
+	* New directory structure of datasets
