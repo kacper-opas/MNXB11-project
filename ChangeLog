@@ -16,3 +16,12 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Workplan.md done.
 	* AUTHORS updated.
 	* ChangeLog cleaned. 
+
+2025-10-21 Lasse Ulbricht <lasseulbricht@gmail.com>
+
+	preprocessing.sh script created to automate data preprocessing
+
+	* Remove whitespaces
+	* Replace all separators with commas
+	* Delete unnecessary columns and rows 
+	* Create changed copy of file
