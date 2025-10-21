@@ -27,8 +27,21 @@ sed "1,${Leading_lines}d" "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
 # Remove unnecessary columns
 cut --complement -d';' -f2,4 "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
 
+awk -F';' '{
+    sum[$1] += $2;    
+    count[$1] += 1;   
+}
+END {
+    for (date in sum) {
+    avg = sum[date] / count[date];
+    printf "%s;%.2f\n", date, avg;
+        
+    }
+}' "$Copy_file" |sort > temp.csv && mv temp.csv "$Copy_file"
+
 # Replace hyphens with commas in datetime object
 awk -F';' 'gsub(/-/, ",", $1){print}' "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
 
 # Replace leftover spaces with commas
 sed -e 's/ /,/g' "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
+

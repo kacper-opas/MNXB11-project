@@ -33,3 +33,12 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* QoL improvements to preprocessing.sh
 	* write.cxx created, which reads the preprocessed data and created TTrees 
 	* New directory structure of datasets
+
+2025-10-21 Lasse Ulbricht <lasseulbricht@gmail.com>
+
+	Extended preprocessing
+
+	* Summing multiple instances of the same date
+	* Temperature for each date taken as an average
+	* Dates sorted chronologically (if there was an issue)
+	
