@@ -1,6 +1,7 @@
 #include <string>
 #include <cmath>
 #include <iostream>
+#include <vector>
 #include "TFile.h"
 #include "TTree.h"
 #include "TGraphErrors.h"
@@ -8,6 +9,9 @@
 #include <TDirectory.h>   
 #include <TProfile.h>
 #include <TFile.h>
+#include <TGraph.h>
+#include <TCanvas.h>
+#include <TAxis.h>
 
 void analysisLU()
 {
@@ -37,7 +41,7 @@ void analysisLU()
 
     //DATAPROCESSING LULEA
     //using root draw with prof to get the mean average for each year
-    ltree->Draw("temperature:year >> lavgtemp(12, 1990, 2000, 1000, -50, 50)", "", "prof");
+    ltree->Draw("temperature:year >> lavgtemp(10, 1990, 2000, 1000, -50, 50)", "", "prof");
     
     //storing the data from the histogramm
     TProfile *lavgtemp = (TProfile*)gDirectory->Get("lavgtemp");
@@ -45,11 +49,15 @@ void analysisLU()
     //from histogramm data get the number of bins 
     int nBins1 = lavgtemp->GetNbinsX();
 
+    //define vectors so we can store all the values 
+    std::vector<double> lyears;
+    std::vector<double> lavgTemps;
+    std::vector<double> lavgTempErrs;
     //extract average temperature with year for lulea
-    for (int i = 1; i <= nBins1; ++i) {  // ROOT bins start at 1
-        double lyear = lavgtemp->GetBinCenter(i);
-        double lavgTemp = lavgtemp->GetBinContent(i);    // Average temperature in bin
-        double lavgTempErr = lavgtemp->GetBinError(i);
+    for (int i = 1; i <= nBins1; ++i) {  
+        lyears.push_back(lavgtemp->GetBinCenter(i));
+        lavgTemps.push_back(lavgtemp->GetBinContent(i));   
+        lavgTempErrs.push_back(lavgtemp->GetBinError(i));
 
     }
 
@@ -57,18 +65,22 @@ void analysisLU()
 
     //DATAPROCESSING FALSTERBO
     //drawing to avoid looping to get averages
-    ftree->Draw("temperature:year >> favgtemp(12, 1990, 2000, 1000, -50, 50)", "", "prof");
+    ftree->Draw("temperature:year >> favgtemp(10, 1990, 2000, 1000, -50, 50)", "", "prof");
     //storing the data from the histogramm
     TProfile *favgtemp = (TProfile*)gDirectory->Get("favgtemp");
 
     //from histogramm data get the number of bins 
     int nBins2 = favgtemp->GetNbinsX();
 
-    //extract average temperature with year for lulea
-    for (int i = 1; i <= nBins2; ++i) {  // ROOT bins start at 1
-        double fyear = favgtemp->GetBinCenter(i);
-        double favgTemp = favgtemp->GetBinContent(i);    // Average temperature in bin
-        double favgTempErr = favgtemp->GetBinError(i);
+    //extract average temperature with year for falsterbo
+    std::vector<double> fyears;
+    std::vector<double> favgTemps;
+    std::vector<double> favgTempErrs;
+    
+    for (int i = 1; i <= nBins2; ++i) {  
+        fyears.push_back(favgtemp->GetBinCenter(i));
+        favgTemps.push_back(favgtemp->GetBinContent(i));   
+        favgTempErrs.push_back(favgtemp->GetBinError(i));
 
     }
 
@@ -76,7 +88,26 @@ void analysisLU()
         std::cerr <<"Error, different amount of years analysed" << std::endl;
     }
 
-    double difftemp;
-
     
+    std::vector<double> difftemp;
+
+    for (int i = 1; i <= nBins2; ++i) {
+        difftemp.push_back(favgTemps[i] - lavgTemps[i]);
+    }
+
+    //GRAPHING
+   
+        TGraph* graph = new TGraph(fyears.size(), fyears.data(), difftemp.data());
+
+
+    graph->SetTitle("Average Temperature per Year;Year;Temperature (°C)");
+
+
+    TCanvas* c = new TCanvas("c", "Temperature Graph", 800, 600);
+    graph->SetMarkerStyle(20);
+    graph->Draw("APL"); 
+
+    c->Update();
+    c->Draw();
+    c->SaveAs("differences_graph.png");
 }
