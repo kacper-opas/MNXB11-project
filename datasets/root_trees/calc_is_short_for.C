@@ -76,11 +76,9 @@ void calc_is_short_for(const char *filename = "smhi-opendata_1_93220_20231007_15
         graphMM5->SetPoint(i, years[i], mm5[i]);
     }
     // spitting Bars
-    graphDiff->SetMarkerStyle(21);
-    graphDiff->SetMarkerColor(kBlue);
     graphDiff->SetLineColor(kBlue);
     graphDiff->SetLineWidth(2);
-    graphMM3->SetLineColor(kRed);
+    graphMM3->SetLineColor(kMagenta);
     graphMM3->SetLineWidth(2);
     graphMM5->SetLineColor(kGreen+2);
     graphMM5->SetLineWidth(2);
@@ -93,13 +91,19 @@ void calc_is_short_for(const char *filename = "smhi-opendata_1_93220_20231007_15
         float xLeft, xRight;
         if (i == 0) xLeft = years[i] - 0.5; 
         else xLeft = (years[i] + years[i-1]) / 2.0;
-
         if (i == nYears-1) xRight = years[i] + 0.5;
         else xRight = (years[i] + years[i+1]) / 2.0;
-
-        TBox *bar = new TBox(xLeft, meanAll, xRight, diffs[i]);
-        bar->SetFillColor(kBlue);
-        bar->SetLineColor(kBlue);
+        float yTop = diffs[i];
+        float yBottom = meanAll;
+        TBox *bar;
+        if (diffs[i] >= meanAll) {
+            bar = new TBox(xLeft, yBottom, xRight, yTop);
+            bar->SetFillColor(kRed);
+        } else {
+            bar = new TBox(xLeft, yTop, xRight, yBottom);
+            bar->SetFillColor(kBlue);
+        }
+        bar->SetLineColor(kBlack);
         bar->Draw();
     }
     graphMM3->Draw("L SAME");
