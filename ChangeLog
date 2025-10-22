@@ -50,9 +50,16 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Project structure updated, header and main scripts implemented.
 	* ROOT flags added to Makefile.
 
-2025-10-21 Kyra Bohnen <kyrabohnen@gmail.com>
+2025-10-22 Kyra Bohnen <kyrabohnen@gmail.com>
 
 	Analysis of the warmest day in Karlstadt 
 
 	*Temperature analysis implemented
 	*Histogram plotted
+  
+2025-10-22 Andrea Delic <andreadelic15@gmail.com>
+
+	Analysis of the average temperature in January in Luleå between 1949 and 2023
+
+	* Averaging the daily temperatures of January for each year
+	* Plotted the results as a bar plot
