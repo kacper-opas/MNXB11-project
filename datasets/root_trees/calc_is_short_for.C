@@ -90,7 +90,15 @@ void calc_is_short_for(const char *filename = "smhi-opendata_1_93220_20231007_15
     // Do sht
     graphDiff->Draw("AP");
     for (int i = 0; i < nYears; i++) {
-        TLine *bar = new TLine(years[i], meanAll, years[i], diffs[i]);
+        float xLeft, xRight;
+        if (i == 0) xLeft = years[i] - 0.5; 
+        else xLeft = (years[i] + years[i-1]) / 2.0;
+
+        if (i == nYears-1) xRight = years[i] + 0.5;
+        else xRight = (years[i] + years[i+1]) / 2.0;
+
+        TBox *bar = new TBox(xLeft, meanAll, xRight, diffs[i]);
+        bar->SetFillColor(kBlue);
         bar->SetLineColor(kBlue);
         bar->Draw();
     }
