@@ -9,7 +9,7 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 # ChangeLog:
 
-2025-10-20 Kacper Opas  <ka2557op-s@student.lu.se>
+2025-10-20 Kacper Opas <ka2557op-s@student.lu.se>
 
 	Initial changes to the workplan.
 
@@ -26,7 +26,7 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Delete unnecessary columns and rows 
 	* Create changed copy of file
 
-2025-10-20 Kacper Opas  <ka2557op-s@student.lu.se>
+2025-10-21 Kacper Opas <ka2557op-s@student.lu.se>
 
 	Reading data into TTrees done.
 
@@ -36,11 +36,19 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 2025-10-21 Lasse Ulbricht <lasseulbricht@gmail.com>
 
-	Extended preprocessing
+	Extended preprocessing.
 
 	* Summing multiple instances of the same date
 	* Temperature for each date taken as an average
 	* Dates sorted chronologically (if there was an issue)
+
+2025-10-21 Kacper Opas <ka2557op-s@student.lu.se>
+
+	Temperature vs. day for Falsterbo done. Header and main files added.
+
+	* Temperature vs. day for Falsterbo analysis and plotting implemented.
+	* Project structure updated, header and main scripts implemented.
+	* ROOT flags added to Makefile.
 
 2025-10-21 Kyra Bohnen <kyrabohnen@gmail.com>
 
@@ -48,4 +56,3 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 	*Temperature analysis implemented
 	*Histogram plotted
-
