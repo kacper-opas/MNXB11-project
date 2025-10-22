@@ -57,3 +57,8 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 2025-10-22 Victor Hallber <victorhallberg12@gmail.com>
 
 	Reformatted program to use root instead and added plotting
+	
+	*Changed code to use Root
+	*Removed old cpp and cxx files
+	*Stopped the printing of txt files and csv files
+	*Made it such that a png of the graph is produced
