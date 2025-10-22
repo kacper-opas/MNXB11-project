@@ -49,7 +49,7 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Temperature vs. day for Falsterbo analysis and plotting implemented.
 	* Project structure updated, header and main scripts implemented.
 	* ROOT flags added to Makefile.
-
+  
 2025-10-22 Kyra Bohnen <kyrabohnen@gmail.com>
 
 	Analysis of the warmest day in Karlstadt 
@@ -63,3 +63,10 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 	* Averaging the daily temperatures of January for each year
 	* Plotted the results as a bar plot
+  
+2025-10-22 Victor Hallber <victorhallberg12@gmail.com>
+
+	Temperature difference between hottest and coldest day for Karlstad done
+  
+  * Plotted the results as a bar plot
+  * Made it such that a png of the graph is produced
