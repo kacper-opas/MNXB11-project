@@ -42,3 +42,9 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Temperature for each date taken as an average
 	* Dates sorted chronologically (if there was an issue)
 	
+2025-10-22 Andrea Delic <andreadelic15@gmail.com>
+
+	Analysis of the average temperature in January in Luleå between 1949 and 2023
+
+	* Averaging the daily temperatures of January for each year
+	* Plotted the results as a bar plot
