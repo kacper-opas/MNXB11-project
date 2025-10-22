@@ -41,4 +41,11 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Summing multiple instances of the same date
 	* Temperature for each date taken as an average
 	* Dates sorted chronologically (if there was an issue)
-	
+
+2025-10-21 Kyra Bohnen <kyrabohnen@gmail.com>
+
+	Analysis of the warmest day in Karlstadt 
+
+	*Temperature analysis implemented
+	*Histogram plotted
+
