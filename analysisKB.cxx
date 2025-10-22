@@ -35,17 +35,14 @@ void analysisKB()
 
     Int_t N = tree->GetEntries();
 
-    // --- Use vectors instead of maps
     std::vector<int> years;
     std::vector<double> maxTemps;
     std::vector<int> warmestDays;
 
-    // --- Loop over entries to find warmest day per year
     for (Int_t i = 0; i < N; ++i) {
         tree->GetEntry(i);
         int doy = dayOfYear(year, month, day);
 
-        // Search if this year is already in our list
         bool found = false;
         for (size_t j = 0; j < years.size(); ++j) {
             if (years[j] == year) {
@@ -58,7 +55,6 @@ void analysisKB()
             }
         }
 
-        // If year not found, add it
         if (!found) {
             years.push_back(year);
             maxTemps.push_back(temperature);
@@ -66,16 +62,13 @@ void analysisKB()
         }
     }
 
-    // --- Create histogram
     TH1F *hWarmest = new TH1F("hWarmest",
         "Most Frequent Warmest Day of Year;Day of Year;Number of Years",
         365, 0.5, 365.5);
 
-    // Fill histogram
     for (size_t i = 0; i < warmestDays.size(); ++i)
         hWarmest->Fill(warmestDays[i]);
 
-    // --- Draw
     TCanvas *c1 = new TCanvas("c1", "Warmest Day of Year", 800, 600);
     hWarmest->SetLineColor(kRed + 1);
     hWarmest->SetFillColorAlpha(kOrange - 2, 0.4);
