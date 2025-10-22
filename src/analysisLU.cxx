@@ -1,5 +1,6 @@
 #include <string>
 #include <cmath>
+#include <iostream>
 #include "TFile.h"
 #include "TTree.h"
 #include "TGraphErrors.h"
@@ -7,9 +8,8 @@
 #include <TDirectory.h>   
 #include <TProfile.h>
 #include <TFile.h>
-#include <ROOT/RDataFrame.hxx>
 
-TGraph analysisLU()
+void analysisLU()
 {
     //assigning strings to root object pash"
     std::string falsterbo_tree = "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
@@ -23,44 +23,60 @@ TGraph analysisLU()
     TFile *lfile = TFile::Open(lule_tree.c_str(), "READ");
     TTree *ltree = (TTree*)lfile->Get("tree");
 
-ROOT::RDataFrame ldf(*ltree);
-ROOT::RDataFrame fdf(*ftree);
+    //reading the branches with temperatures and year numbers for both trees 
+    int lyear, fyear;
+    float ltemp, ftemp;
+    ltree->SetBranchAddress("year", &lyear);
+    ltree->SetBranchAddress("temperature", &ltemp);
+    ftree->SetBranchAddress("year", &fyear);
+    ftree->SetBranchAddress("temperature", &ftemp);
 
-// Compute average temperature per year for each tree
-auto l_avg = ldf.GroupBy("year").Mean("temperature");
-auto f_avg = fdf.GroupBy("year").Mean("temperature");
+    //initialize and get number of entries for each tree 
+    Int_t lnentries = ltree->GetEntries();
+    Int_t fentries = ftree->GetEntries();
 
-// Convert grouped results to a map for easy lookup
-std::map<int, double> l_map;
-std::map<int, double> f_map;
+    //DATAPROCESSING LULEA
+    //using root draw with prof to get the mean average for each year
+    ltree->Draw("temperature:year >> lavgtemp(12, 1990, 2000, 1000, -50, 50)", "", "prof");
+    
+    //storing the data from the histogramm
+    TProfile *lavgtemp = (TProfile*)gDirectory->Get("lavgtemp");
 
-l_avg->Foreach([&](int year, double temp_mean) {
-    l_map[year] = temp_mean;
-}, {"year", "temperature"});
+    //from histogramm data get the number of bins 
+    int nBins1 = lavgtemp->GetNbinsX();
 
-f_avg->Foreach([&](int year, double temp_mean) {
-    f_map[year] = temp_mean;
-}, {"year", "temperature"});
+    //extract average temperature with year for lulea
+    for (int i = 1; i <= nBins1; ++i) {  // ROOT bins start at 1
+        double lyear = lavgtemp->GetBinCenter(i);
+        double lavgTemp = lavgtemp->GetBinContent(i);    // Average temperature in bin
+        double lavgTempErr = lavgtemp->GetBinError(i);
 
-// Now compute differences
-std::vector<int> years;
-std::vector<double> diffs;
-
-for (const auto& [year, ltemp] : l_map) {
-    if (f_map.count(year)) {
-        years.push_back(year);
-        diffs.push_back(ltemp - f_map[year]);
     }
-}
 
-// Plot differences as a TGraph
-TGraph *gr = new TGraph(years.size(), years.data(), diffs.data());
-gr->SetTitle("Average Temperature Difference per Year");
-gr->GetXaxis()->SetTitle("Year");
-gr->GetYaxis()->SetTitle("ltree - ftree temperature");
-gr->Draw("AL");
+
+
+    //DATAPROCESSING FALSTERBO
+    //drawing to avoid looping to get averages
+    ftree->Draw("temperature:year >> favgtemp(12, 1990, 2000, 1000, -50, 50)", "", "prof");
+    //storing the data from the histogramm
+    TProfile *favgtemp = (TProfile*)gDirectory->Get("favgtemp");
+
+    //from histogramm data get the number of bins 
+    int nBins2 = favgtemp->GetNbinsX();
+
+    //extract average temperature with year for lulea
+    for (int i = 1; i <= nBins2; ++i) {  // ROOT bins start at 1
+        double fyear = favgtemp->GetBinCenter(i);
+        double favgTemp = favgtemp->GetBinContent(i);    // Average temperature in bin
+        double favgTempErr = favgtemp->GetBinError(i);
+
+    }
+
+    if (nBins1 != nBins2 ) {
+        std::cerr <<"Error, different amount of years analysed" << std::endl;
+    }
+
+    double difftemp;
 
     
-
-
 }
