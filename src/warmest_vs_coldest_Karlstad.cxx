@@ -10,8 +10,9 @@
 #include <map>
 #include <vector>
 #include <numeric>
+#include "include/analysis_and_plotting.h"
 
-void calc_is_short_for(const char *filename = "smhi-opendata_1_93220_20231007_155708_Karlstad_preprocessed.root") {
+void warmest_vs_coldest_Karlstad(const char *filename = "smhi-opendata_1_93220_20231007_155708_Karlstad_preprocessed.root") {
     TFile *file = TFile::Open(filename, "READ");
     if (!file || file->IsZombie()) {
         std::cerr << "Error: cannot open file " << filename << std::endl;

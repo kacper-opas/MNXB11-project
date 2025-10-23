@@ -6,6 +6,7 @@
 #include <vector>
 #include <cmath>
 #include "TGraph.h"
+#include "include/analysis_and_plotting.h"
 
 bool isLeapYear(int year) {
     return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
@@ -20,7 +21,7 @@ int dayOfYear(int year, int month, int day) {
     return doy;
 }
 
-void analysisKB()
+void warmest_day_Karlstad()
 {
     std::string karlstadt_tree = "datasets/root_trees/smhi-opendata_1_93220_20231007_155708_Karlstad_preprocessed.root";
     TFile *file = TFile::Open(karlstadt_tree.c_str(), "READ");

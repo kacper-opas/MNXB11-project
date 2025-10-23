@@ -5,7 +5,7 @@
 #include "TFile.h"
 #include "TTree.h"
 #include "TGraphErrors.h"
-//#include "include/analysis_and_plotting.h"
+#include "include/analysis_and_plotting.h"
 #include <TDirectory.h>   
 #include <TProfile.h>
 #include <TFile.h>
@@ -13,7 +13,7 @@
 #include <TCanvas.h>
 #include <TAxis.h>
 
-void analysisLU()
+void diff_in_mean_temp_Lulea_Falsterbo()
 {
     //assigning strings to root object pash"
     std::string falsterbo_tree = "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
@@ -35,10 +35,6 @@ void analysisLU()
     ftree->SetBranchAddress("year", &fyear);
     ftree->SetBranchAddress("temperature", &ftemp);
 
-    //initialize and get number of entries for each tree 
-    Int_t lnentries = ltree->GetEntries();
-    Int_t fentries = ftree->GetEntries();
-
     //set starting and ending years for our plot
     int startyear = 1950;
     int endyear = 2022;
@@ -46,7 +42,6 @@ void analysisLU()
 
     //build string from components
     std::string cmd = "temperature:year >> lavgtemp(" + std::to_string(yearbins) + "," + std::to_string(startyear) + "," + std::to_string(endyear) + ", 1000, -50, 50)";
-
 
     //DATAPROCESSING LULEA
     //using root draw with prof to get the mean average for each year

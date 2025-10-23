@@ -1,9 +1,11 @@
 #pragma once
 #include "TGraphErrors.h"
 
-TGraphErrors* analysisKO();
+bool isLeapYear(int year);
+int dayOfYear(int year, int month, int day);
 
-//void analysisLU();
-//void analysisKB();
-//void analysisAD();
-//void analysisVH();
+void diff_in_mean_temp_Lulea_Falsterbo();
+void mean_temp_each_day_Falsterbo();
+void mean_temp_Janunary_Lulea();
+void warmest_day_Karlstad();
+//void warmest_vs_coldest_Karlstad();

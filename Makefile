@@ -9,14 +9,24 @@ ROOTLIBS := $(shell root-config --libs)
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES) $(ROOTCFLAGS)
 LDFLAGS := $(ROOTLIBS)
 
+SRCS := \
+	src/diff_in_mean_temp_Lulea_Falsterbo.cxx \
+	src/mean_temp_each_day_Falsterbo.cxx \
+	src/mean_temp_Janunary_Lulea.cxx \
+	src/warmest_day_Karlstad.cxx
+# src/warmest_vs_coldest_Karlstad.cxx
+
+OBJS := $(SRCS:.cxx=.o)
+
 .PHONY: all clean
 
 all: main
 
-main: main.cxx src/analysisKO.o
+main: main.cxx $(OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
-src/analysisKO.o: src/analysisKO.cxx
+# Generic rule for any .cxx → .o
+src/%.o: src/%.cxx
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:

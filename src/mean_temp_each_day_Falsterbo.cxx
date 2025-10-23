@@ -5,20 +5,7 @@
 #include "TGraphErrors.h"
 #include "include/analysis_and_plotting.h"
 
-bool isLeapYear(int year) {
-    return (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0));
-}
-
-int dayOfYear(int year, int month, int day) {
-    int days_in_month[] = { 31,28,31,30,31,30,31,31,30,31,30,31 };
-    if (isLeapYear(year)) days_in_month[1] = 29;
-    int doy = 0;
-    for (int i = 0; i < month-1; i++) doy += days_in_month[i];
-    doy += day;
-    return doy;
-}
-
-TGraphErrors* analysisKO()
+void mean_temp_each_day_Falsterbo()
 {
     std::string falsterbo_tree = "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
 
@@ -58,8 +45,7 @@ TGraphErrors* analysisKO()
     }
 
     TGraphErrors *graph = new TGraphErrors(points, x, y, ex, ey);
+    graph->Draw("APL"); 
 
     file->Close();
-
-    return graph;
 }
