@@ -41,12 +41,35 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* Summing multiple instances of the same date
 	* Temperature for each date taken as an average
 	* Dates sorted chronologically (if there was an issue)
-	
+  
+2025-10-22 Kyra Bohnen <kyrabohnen@gmail.com>
 
+	Analysis of the warmest day in Karlstadt 
+
+	*Temperature analysis implemented
+	*Histogram plotted
+  
+2025-10-22 Andrea Delic <andreadelic15@gmail.com>
+
+	Analysis of the average temperature in January in Luleå between 1949 and 2023
+
+	* Averaging the daily temperatures of January for each year
+	* Plotted the results as a bar plot
+  
+2025-10-22 Victor Hallber <victorhallberg12@gmail.com>
+
+	Temperature difference between hottest and coldest day for Karlstad done
+  
+  * Plotted the results as a bar plot
+  * Made it such that a png of the graph is produced
+  
 2025-10-23 Lasse Ulbricht <lasseulbricht@gmail.com>
 
-	Analysis added (Lasses part)
+	Analysis added (Lasses part).
 
-	*Mean yearly temperatures computed
-	*Difference between Lulea and falsterbo in average temperature
-	*Plotting of the main result
+	* Mean yearly temperatures computed
+	* Difference between Lulea and falsterbo in average temperature
+	* Plotting of the main result
+	* Temperature vs. day for Falsterbo analysis and plotting implemented.
+	* Project structure updated, header and main scripts implemented.
+	* ROOT flags added to Makefile.
