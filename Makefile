@@ -12,9 +12,9 @@ LDFLAGS := $(ROOTLIBS)
 SRCS := \
 	src/diff_in_mean_temp_Lulea_Falsterbo.cxx \
 	src/mean_temp_each_day_Falsterbo.cxx \
-	src/mean_temp_Janunary_Lulea.cxx \
-	src/warmest_day_Karlstad.cxx
-# src/warmest_vs_coldest_Karlstad.cxx
+	src/mean_temp_January_Lulea.cxx \
+	src/warmest_day_Karlstad.cxx \
+	src/warmest_vs_coldest_Karlstad.cxx
 
 OBJS := $(SRCS:.cxx=.o)
 

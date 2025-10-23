@@ -5,8 +5,8 @@
 #include "TStyle.h"
 #include "include/analysis_and_plotting.h"
 
-void mean_temp_Janunary_Lulea() {
-    std::string lulea_tree = "/home/andreadelic/git/MNXB11-project/datasets/root_trees/smhi-opendata_1_162860_20231007_155220_Lulea_preprocessed.root";
+void mean_temp_January_Lulea() {
+    std::string lulea_tree = "datasets/root_trees/smhi-opendata_1_162860_20231007_155220_Lulea_preprocessed.root";
 
     TFile *file = TFile::Open(lulea_tree.c_str(), "READ");
     TTree *tree = (TTree*)file->Get("tree");
