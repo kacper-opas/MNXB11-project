@@ -39,9 +39,18 @@ void analysisLU()
     Int_t lnentries = ltree->GetEntries();
     Int_t fentries = ftree->GetEntries();
 
+    //set starting and ending years for our plot
+    int startyear = 1950;
+    int endyear = 2022;
+    int yearbins = endyear - startyear + 1; 
+
+    //build string from components
+    std::string cmd = "temperature:year >> lavgtemp(" + std::to_string(yearbins) + "," + std::to_string(startyear) + "," + std::to_string(endyear) + ", 1000, -50, 50)";
+
+
     //DATAPROCESSING LULEA
     //using root draw with prof to get the mean average for each year
-    ltree->Draw("temperature:year >> lavgtemp(10, 1990, 2000, 1000, -50, 50)", "", "prof");
+    ltree->Draw(cmd.c_str(), "", "prof");
     
     //storing the data from the histogramm
     TProfile *lavgtemp = (TProfile*)gDirectory->Get("lavgtemp");
@@ -64,11 +73,19 @@ void analysisLU()
 
 
     //DATAPROCESSING FALSTERBO
+    //string for input 
+    std::string cmd2 = "temperature:year >> favgtemp(" + std::to_string(yearbins) + "," + std::to_string(startyear) + "," + std::to_string(endyear) + ", 1000, -50, 50)";
+
     //drawing to avoid looping to get averages
-    ftree->Draw("temperature:year >> favgtemp(10, 1990, 2000, 1000, -50, 50)", "", "prof");
+    ftree->Draw(cmd2.c_str(), "", "prof");
     //storing the data from the histogramm
     TProfile *favgtemp = (TProfile*)gDirectory->Get("favgtemp");
 
+    //checking if the histogram for falsterbo is created properly
+    if (!favgtemp) {
+    std::cerr << "Error: Histogram 'favgtemp' not found in current directory!" << std::endl;
+    return; 
+}
     //from histogramm data get the number of bins 
     int nBins2 = favgtemp->GetNbinsX();
 
@@ -97,17 +114,26 @@ void analysisLU()
 
     //GRAPHING
    
-        TGraph* graph = new TGraph(fyears.size(), fyears.data(), difftemp.data());
+    int nYears = fyears.size();
+double start = fyears.front() - 0.5;
+double end   = fyears.back() + 0.5;
 
+// Make a histogram with one bin per year
+TH1D *hdiff = new TH1D("hdiff", "Average Temperature Difference per Year;Year;ΔT (°C)",
+                       nYears, start, end);
 
-    graph->SetTitle("Average Temperature per Year;Year;Temperature (°C)");
+// Fill the bins manually
+for (size_t i = 0; i < fyears.size(); ++i) {
+    hdiff->SetBinContent(i+1, difftemp[i]);  // +1 because ROOT bins start at 1
+}
 
+// Optional: style
+hdiff->SetLineColor(kBlue+1);
+hdiff->SetFillColorAlpha(kAzure-9, 0.4);
+hdiff->SetLineWidth(2);
 
-    TCanvas* c = new TCanvas("c", "Temperature Graph", 800, 600);
-    graph->SetMarkerStyle(20);
-    graph->Draw("APL"); 
+TCanvas *c2 = new TCanvas("c2", "Histogram of ΔT", 900, 600);
+hdiff->Draw("HIST");
 
-    c->Update();
-    c->Draw();
-    c->SaveAs("differences_graph.png");
+c2->SaveAs("temp_difference_histogram.png"); 
 }
