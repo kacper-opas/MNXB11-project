@@ -19,7 +19,7 @@ void write() {
         // Create a TTree
         TTree t("tree", ("Tree from " + base_name).c_str());
 
-        t.ReadFile(csv_file.c_str(), "year/I:month/I:day/I:temperature/F", ',');
+        t.ReadFile(csv_file.c_str(), "year/D:month/D:day/D:temperature/D", ',');
 
         // Write and close
         t.Write();
