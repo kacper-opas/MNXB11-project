@@ -81,3 +81,13 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 	* Files moved around.
 	* Names changed.
+
+  
+2025-10-27 Kacper Opas <ka2557op-s@student.lu.se>
+
+	Combined all analyses into something more coherent.
+
+	* analysis_utils and plotting_utils created, with relevenat plotting and analysis functions.
+	* TemperatureData class created.
+	* Folder for result plots created.
+	* Structure slightly rearranged.

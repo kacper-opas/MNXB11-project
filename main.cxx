@@ -1,4 +1,6 @@
-#include "include/analysis_and_plotting.h"
+#include "include/analyses.h"
+#include "include/analysis_utils.h"
+#include "include/plotting_utils.h"
 
 int main() {
     diff_in_mean_temp_Lulea_Falsterbo();
