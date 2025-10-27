@@ -17,7 +17,7 @@ void mean_temp_January_Lulea()
     int year_max = 2024;
     int nbins = year_max - year_min;
 
-    std::vector<double> meanJanuaryTemps = data.calculateMeanProfile(
+    auto [meanJanuaryTemps, _] = data.calculateMeanProfile(
         "temperature",
         "year",
         nbins,
@@ -31,6 +31,5 @@ void mean_temp_January_Lulea()
         years.push_back(year_min + i);
     }
 
-    // Make the bar plot
-    makeBarPlot(years, meanJanuaryTemps, "title", "results/mean_temp_January_Lulea.png");
+    makeBarPlot(years, meanJanuaryTemps, "title", "results/mean_temp_January_Lulea.png", 0.0);
 }

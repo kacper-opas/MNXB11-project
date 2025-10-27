@@ -1,51 +1,57 @@
 #include <string>
-#include <cmath>
+#include <vector>
 #include "TFile.h"
 #include "TTree.h"
-#include "TGraphErrors.h"
-#include "include/analysis_and_plotting.h"
+#include "TProfile.h"
+#include "include/analysis_utils.h"
+#include "include/plotting_utils.h"
+#include "include/analyses.h"
 
 void mean_temp_each_day_Falsterbo()
 {
-    std::string falsterbo_tree = "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
+    std::string falsterbo_tree =
+        "datasets/root_trees/smhi-opendata_1_52230_20231007_155448_Falsterbo_preprocessed.root";
 
-    TFile *file = TFile::Open(falsterbo_tree.c_str(), "READ");
-    TTree *tree = (TTree*)file->Get("tree");
+    TTree *tree = readTree(falsterbo_tree);
+    TemperatureData data(tree);
 
-    int year, month, day;
-    float temperature;
-    tree->SetBranchAddress("year", &year);
-    tree->SetBranchAddress("month", &month);
-    tree->SetBranchAddress("day", &day);
-    tree->SetBranchAddress("temperature", &temperature);
+    int nbins = 366;
+    double xMin = 1;
+    double xMax = 367;
 
-    double tempSum[366] = {0};
-    double tempSum2[366] = {0};
-    int tempCount[366] = {0};
+    TProfile *prof = new TProfile("prof", "prof", nbins, xMin, xMax);
+    for (size_t i = 0; i < data.temperatures.size(); ++i)
+        prof->Fill(data.day_of_year[i], data.temperatures[i]);
 
-    Int_t nentries = tree->GetEntries();
-    for (Int_t i = 0; i < nentries; i++) {
-        tree->GetEntry(i);
-        int doy = dayOfYear(year, month, day) - 1;
-        tempSum[doy] += temperature;
-        tempSum2[doy] += temperature * temperature;
-        tempCount[doy]++;
-    }
+    std::vector<double> means, errors;
+    means.reserve(nbins);
+    errors.reserve(nbins);
 
-    double x[366], y[366], ex[366], ey[366];
-    int points = 0;
-    for (int i = 0; i < 366; i++) {
-        if (tempCount[i] > 0) {
-            x[points] = i + 1;
-            y[points] = tempSum[i] / tempCount[i];
-            ex[points] = 0;
-            ey[points] = sqrt(tempSum2[i] / tempCount[i] - y[points] * y[points]);
-            points++;
+    for (int i = 1; i <= prof->GetNbinsX(); ++i)
+    {
+        if (prof->GetBinEntries(i) > 0)
+        {
+            means.push_back(prof->GetBinContent(i));
+            errors.push_back(prof->GetBinError(i));
+        }
+        else
+        {
+            means.push_back(0.0);
+            errors.push_back(0.0);
         }
     }
 
-    TGraphErrors *graph = new TGraphErrors(points, x, y, ex, ey);
-    graph->Draw("APL"); 
+    delete prof;
 
-    file->Close();
+    std::vector<double> x, ex;
+    for (int i = 0; i < (int)means.size(); ++i)
+    {
+        x.push_back(i + 1);
+        ex.push_back(0.0);
+    }
+
+    makeErrorGraph(x, means, ex, errors,
+                   "title",
+                   "results/mean_temp_each_day_Falsterbo.png");
 }
+

@@ -22,11 +22,11 @@ void diff_in_mean_temp_Lulea_Falsterbo()
     int endyear = 2022;
     int yearbins = endyear - startyear;
 
-    std::vector<double> lavgTemps = ldata.calculateMeanProfile(
-        "temperature", "year", yearbins, startyear, endyear);
+    auto lavgPair = ldata.calculateMeanProfile("temperature", "year", yearbins, startyear, endyear);
+    auto favgPair = fdata.calculateMeanProfile("temperature", "year", yearbins, startyear, endyear);
 
-    std::vector<double> favgTemps = fdata.calculateMeanProfile(
-        "temperature", "year", yearbins, startyear, endyear);
+    auto lavgTemps = lavgPair.first;
+    auto favgTemps = favgPair.first;
 
     std::vector<double> years;
     for (int i = 0; i < yearbins; ++i)
@@ -40,6 +40,5 @@ void diff_in_mean_temp_Lulea_Falsterbo()
         difftemp[i] = favgTemps[i] - lavgTemps[i];
     }
 
-    makeBarPlot(years, difftemp, "Difference in Mean Temperature (Falsterbo - Lulea)",
-                "results/diff_in_mean_temp_Lulea_Falsterbo.png");
+    makeBarPlot(years, difftemp, "title", "results/diff_in_mean_temp_Lulea_Falsterbo.png", 0.0);
 }
