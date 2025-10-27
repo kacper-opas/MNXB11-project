@@ -44,5 +44,5 @@ void warmest_vs_coldest_Karlstad() {
         }
     }
 
-    makeBarPlot(years, diffs, "title", "results/warmest_vs_coldest_Karlstad.png", 40.0);
+    makeBarPlot(years, diffs, "Warmest vs. Coldest day in Karlstad;Day of the year;Temperature [Degrees Celsius]", "results/warmest_vs_coldest_Karlstad.png", 40.0);
 }

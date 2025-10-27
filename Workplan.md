@@ -6,7 +6,7 @@ Team members: Lasse Ulbricht, Andrea Delic, Kyra Bohnen, Victor Hallberg, Kacper
 # Plan
 STAGE 1: Pre-processing
 1. Clean the data (proper CSV formatting) for
-    1.1. Lulea (ANDREA)
+    1.1. Lulea (KACPER)
     1.2. Falsterbo (LASSE)
     1.3. Karlstad (VICTOR)
 
@@ -18,7 +18,7 @@ STAGE 3: Analysis
 5. Mean temperature on each day of the year in Falsterbo; compare with the manual. (KACPER) 
 
 STAGE 4: Figures
-1. Generate the figures. Make them nice with proper axes labelling, title, etc. (KACPER)
+1. Generate the figures. Make them nice with proper axes labelling, title, etc. (ANDREA)
 
 STAGE 5: Report
 1. Write the common part: introduction and conclusion (KYRA)

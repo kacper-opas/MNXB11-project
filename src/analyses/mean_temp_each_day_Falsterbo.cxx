@@ -51,7 +51,7 @@ void mean_temp_each_day_Falsterbo()
     }
 
     makeErrorGraph(x, means, ex, errors,
-                   "title",
+                   "Mean temperature on each day of the year in Falsterbo;Day of the year;Mean Temperature [Degrees Celsius]",
                    "results/mean_temp_each_day_Falsterbo.png");
 }
 

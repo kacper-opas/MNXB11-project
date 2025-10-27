@@ -3,6 +3,7 @@
 #include <iostream>
 #include "TFile.h"
 #include "TTree.h"
+#include "TLatex.h"
 #include "include/analysis_utils.h"
 #include "include/plotting_utils.h"
 #include "include/analyses.h"
@@ -40,5 +41,5 @@ void diff_in_mean_temp_Lulea_Falsterbo()
         difftemp[i] = favgTemps[i] - lavgTemps[i];
     }
 
-    makeBarPlot(years, difftemp, "title", "results/diff_in_mean_temp_Lulea_Falsterbo.png", 0.0);
+    makeBarPlot(years, difftemp, "Difference in mean temperature between Lulea and Falsterbo;Year;Temperature difference [Degrees Celsius]", "results/diff_in_mean_temp_Lulea_Falsterbo.png", 0.0);
 }
