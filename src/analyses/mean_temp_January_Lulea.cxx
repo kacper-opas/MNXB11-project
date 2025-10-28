@@ -31,5 +31,5 @@ void mean_temp_January_Lulea()
         years.push_back(year_min + i);
     }
 
-    makeBarPlot(years, meanJanuaryTemps, "title", "results/mean_temp_January_Lulea.png", 0.0);
+    makeBarPlot(years, meanJanuaryTemps, "Mean January temperature in Lulea;Year;Mean Temperature [Degrees Celsius]", "results/mean_temp_January_Lulea.png", 0.0);
 }

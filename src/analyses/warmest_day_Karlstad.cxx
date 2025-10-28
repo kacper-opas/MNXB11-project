@@ -44,5 +44,5 @@ void warmest_day_Karlstad() {
     std::vector<double> days(366);
     for (int i = 0; i < 366; ++i) days[i] = i + 1;
 
-    makeHistogram(days, dayCounts, "title", "results/warmest_day_Karlstad.png");
+    makeHistogram(days, dayCounts, "Warmest day in Karlstad;Day of the year;Counts", "results/warmest_day_Karlstad.png");
 }
