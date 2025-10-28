@@ -91,3 +91,10 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* TemperatureData class created.
 	* Folder for result plots created.
 	* Structure slightly rearranged.
+
+2025-10-27 Lasse Ulbricht <lasseulbricht@gmail.com>
+
+	Preprocessing wrapperscript created
+
+	* First and last year removed from each datafile
+	* Wrapperscript processes all files in datasets/raw_data
