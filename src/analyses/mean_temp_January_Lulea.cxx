@@ -1,35 +1,50 @@
-#include "include/plotting_utils.h"
-#include "include/analysis_utils.h"
 #include "include/analyses.h"
-#include "TFile.h"
-#include "TTree.h"
-#include <vector>
-#include <string>
 
+/**
+ * @brief Computes and plots the mean January temperature in Luleå
+ *        over a specified range of years.
+ *
+ * Uses a ROOT TTree to extract data and TemperatureData to calculate
+ * mean temperatures for each year, filtered for January (month==1).
+ */
 void mean_temp_January_Lulea()
 {
-    std::string lulea_tree = "datasets/root_trees/smhi-opendata_1_162860_20231007_155220_Lulea_preprocessed.root";
-    TTree *tree = readTree(lulea_tree);
+    // Path to Luleå preprocessed ROOT tree
+    const std::string luleaTreePath =
+        "datasets/root_trees/smhi-opendata_1_162860_20231007_155220_Lulea_preprocessed.root";
 
+    // Load TTree and load into TemperatureData class
+    TTree* tree = readTree(luleaTreePath);
     TemperatureData data(tree);
 
-    int year_min = 1954;
-    int year_max = 2024;
-    int nbins = year_max - year_min;
+    // Define the range of years and number of bins
+    const int yearMin = 1954;
+    const int yearMax = 2024;
+    const int nBins = yearMax - yearMin;
 
+    // Compute mean January temperatures per year
+    // selection "month==1" ensures only January data is included
     auto [meanJanuaryTemps, _] = data.calculateMeanProfile(
         "temperature",
         "year",
-        nbins,
-        year_min,
-        year_max,
-        "month==1");
+        nBins,
+        yearMin,
+        yearMax,
+        "month==1"
+    );
 
+    // Generate x-axis values (years)
     std::vector<double> years;
-    for (int i = 0; i < nbins; ++i)
-    {
-        years.push_back(year_min + i);
-    }
+    years.reserve(nBins);
+    for (int i = 0; i < nBins; ++i)
+        years.push_back(yearMin + i);
 
-    makeBarPlot(years, meanJanuaryTemps, "Mean January temperature in Lulea;Year;Mean Temperature [Degrees Celsius]", "results/mean_temp_January_Lulea.png", 0.0);
+    // Plot mean January temperatures as a bar chart
+    makeBarPlot(
+        years,
+        meanJanuaryTemps,
+        "Mean January temperature in Lulea;Year;Mean Temperature [°C]",
+        "results/mean_temp_January_Lulea.png",
+        /* baseY = */ 0.0
+    );
 }

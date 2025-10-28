@@ -97,9 +97,15 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 	* First and last year removed from each datafile
 	* Wrapperscript processes all files in datasets/raw_data
   
-2025-10-27 Andrea Delic <andreadelic15@gmail.com
+2025-10-27 Andrea Delic <andreadelic15@gmail.com>
 
 	Added labels and titles to all plots.
 
 	* Edited the analysis files to create titles and labels for the plots.
 	* Updated the existing plots. 
+
+2025-10-28 Kacper Opas <ka2557op-s@student.lu.se>
+
+	Documentation added.
+
+	* Added doxygen style documentation to most files. 

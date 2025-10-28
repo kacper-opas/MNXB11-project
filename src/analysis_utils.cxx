@@ -1,96 +1,126 @@
+/**
+ * @file analysis_utils.cpp
+ * @brief Helper functions and TemperatureData implementation.
+ */
+
 #include "include/analysis_utils.h"
 #include "TFile.h"
 #include "TProfile.h"
+#include "TDirectory.h"
 
+/**
+ * @brief Returns true if the given year is a leap year.
+ */
 bool isLeapYear(int year)
 {
     return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
 }
 
+/**
+ * @brief Converts a date to the day-of-year (1–365/366).
+ */
 int dayOfYear(int year, int month, int day)
 {
-    static const int daysBeforeMonthNormal[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
-    static const int daysBeforeMonthLeap[12] = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335};
+    static const int daysNormal[12] = {0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334};
+    static const int daysLeap[12] = {0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335};
 
-    if (isLeapYear(year))
-    {
-        return daysBeforeMonthLeap[month - 1] + day;
-    }
-    else
-    {
-        return daysBeforeMonthNormal[month - 1] + day;
-    }
+    return (isLeapYear(year) ? daysLeap : daysNormal)[month - 1] + day;
 }
 
-TTree *readTree(const std::string &tree_file)
+/**
+ * @brief Opens a ROOT file and returns the TTree named "tree".
+ */
+TTree *readTree(const std::string &filename)
 {
-    TFile *file = TFile::Open(tree_file.c_str(), "READ");
-    TTree *tree = dynamic_cast<TTree *>(file->Get("tree"));
-
-    return tree;
+    TFile *file = TFile::Open(filename.c_str(), "READ"); // Load ROOT file from disk
+    return dynamic_cast<TTree *>(file->Get("tree"));     // Return pointer to stored TTree
 }
 
+/**
+ * @brief Default constructor.
+ */
 TemperatureData::TemperatureData() = default;
 
+/**
+ * @brief Default destructor.
+ */
 TemperatureData::~TemperatureData() = default;
 
-TemperatureData::TemperatureData(TTree *tree)
+/**
+ * @brief Loads temperature data from a TTree with branches: year, month, day, temperature.
+ */
+TemperatureData::TemperatureData(TTree *inputTree)
 {
-    this->tree = tree;
+    tree = inputTree;
+    double y = 0, m = 0, d = 0, temp = 0;
 
-    double year = 0, month = 0, day = 0, temp = 0;
-
-    tree->SetBranchAddress("year", &year);
-    tree->SetBranchAddress("month", &month);
-    tree->SetBranchAddress("day", &day);
+    // Link branch names to the temporary variables
+    tree->SetBranchAddress("year", &y);
+    tree->SetBranchAddress("month", &m);
+    tree->SetBranchAddress("day", &d);
     tree->SetBranchAddress("temperature", &temp);
 
-    Int_t nEntries = tree->GetEntries();
-    years.reserve(nEntries);
-    months.reserve(nEntries);
-    days.reserve(nEntries);
-    temperatures.reserve(nEntries);
-    day_of_year.reserve(nEntries);
+    // Pre-allocate vectors
+    const Int_t n = tree->GetEntries();
+    years.reserve(n);
+    months.reserve(n);
+    days.reserve(n);
+    temperatures.reserve(n);
+    dayOfYearVec.reserve(n);
 
-    for (Int_t i = 0; i < nEntries; ++i)
+    // Extract and store all data from the tree
+    for (Int_t i = 0; i < n; ++i)
     {
-        tree->GetEntry(i);
-        years.push_back(year);
-        months.push_back(month);
-        days.push_back(day);
+        tree->GetEntry(i); // Load the i-th row into temporary variables
+
+        years.push_back(y);
+        months.push_back(m);
+        days.push_back(d);
         temperatures.push_back(temp);
 
-        day_of_year.push_back(dayOfYear(static_cast<int>(year),
-                                        static_cast<int>(month),
-                                        static_cast<int>(day)));
+        // Convert date to continuous day index and store
+        dayOfYearVec.push_back(dayOfYear(static_cast<int>(y),
+                                         static_cast<int>(m),
+                                         static_cast<int>(d)));
     }
 }
 
+/**
+ * @brief Computes the mean profile of yVar vs xVar using ROOT's TProfile.
+ *
+ * @return Pair of (mean values, errors) for each bin.
+ */
 std::pair<std::vector<double>, std::vector<double>>
-TemperatureData::calculateMeanProfile(const std::string &y_var,
-                                      const std::string &x_var,
-                                      int nbins,
+TemperatureData::calculateMeanProfile(const std::string &yVar,
+                                      const std::string &xVar,
+                                      int nBins,
                                       double xMin,
                                       double xMax,
                                       const std::string &selection) const
 {
-    TProfile *prof = new TProfile("prof", "prof", nbins, xMin, xMax);
+    // Create a new TProfile
+    TProfile *prof = new TProfile("prof", "prof", nBins, xMin, xMax);
 
-    std::string drawCmd = y_var + ":" + x_var + ">>prof";
+    // Construct the drawing command for the TTree
+    std::string drawCmd = yVar + ":" + xVar + ">>prof";
 
-    tree->Draw(drawCmd.c_str(), selection.c_str(), "goff");
+    // Fill the profile from the tree
+    tree->Draw(drawCmd.c_str(), selection.c_str(), "goff"); // "goff" = graphics off
 
+    // Prepare vectors to store mean values and their errors
     std::vector<double> means;
     std::vector<double> errors;
-    means.reserve(nbins);
-    errors.reserve(nbins);
+    means.reserve(nBins);
+    errors.reserve(nBins);
 
+    // Loop over bins and extract content and error
     for (int i = 1; i <= prof->GetNbinsX(); ++i)
     {
-        means.push_back(prof->GetBinContent(i));
-        errors.push_back(prof->GetBinError(i));
+        means.push_back(prof->GetBinContent(i)); // mean y in bin i
+        errors.push_back(prof->GetBinError(i));  // standard error in bin i
     }
 
+    // Clean up allocated profile to avoid memory leaks
     delete prof;
 
     return {means, errors};

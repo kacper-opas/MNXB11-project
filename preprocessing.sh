@@ -11,7 +11,6 @@ mkdir -p "$PREPROCESSED_DIR"
 Input_file="$1"
 Leading_lines="25"
 
-
 # Full path to input file inside dataset directory
 Input_path="$RAW_DATA_DIR/$Input_file"
 
@@ -46,10 +45,10 @@ awk -F';' 'gsub(/-/, ",", $1){print}' "$Copy_file" > temp.csv && mv temp.csv "$C
 # Replace leftover spaces with commas
 sed -e 's/ /,/g' "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
 
-#look for the starting and ending year via column/row
+# Look for the starting and ending year via column/row
 Start_year=$(cut -d',' -f1 "$Copy_file" | head -n1)
 End_year=$(cut -d',' -f1 "$Copy_file" | tail -n1)
 
-#cut all entries with these years 
+# Cut all entries with these years 
 sed "/^$Start_year\|$End_year/d" "$Copy_file" > temp.csv && mv temp.csv "$Copy_file"
 

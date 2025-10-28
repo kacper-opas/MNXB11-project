@@ -3,26 +3,41 @@
 #include <filesystem>
 #include <string>
 
-void write() {
-    std::string input_dir = "datasets/preprocessed_data";
-    std::string output_dir = "datasets/root_trees";
+/**
+ * @brief Converts all CSV files in `datasets/preprocessed_data` into ROOT files
+ *        containing a TTree named "tree" with branches:
+ *        year, month, day, temperature.
+ *
+ * Output ROOT files are written to `datasets/root_trees` with the same base name.
+ */
+void write()
+{
+    const std::string inputDir  = "datasets/preprocessed_data";
+    const std::string outputDir = "datasets/root_trees";
 
-    // Loop over all CSV files in the input directory
-    for (const auto& entry : std::filesystem::directory_iterator(input_dir)) {
-        std::string csv_file = entry.path().string();
-        std::string base_name = entry.path().stem().string();
-        std::string root_file_path = output_dir + "/" + base_name + ".root";
+    // Iterate over all files in input directory
+    for (const auto& entry : std::filesystem::directory_iterator(inputDir))
+    {
+        // Full path to input CSV file
+        std::string csvPath = entry.path().string();
 
-        // Open ROOT file for writing
-        TFile f(root_file_path.c_str(), "RECREATE");
+        // File name without extension (e.g., "data_1990")
+        std::string baseName = entry.path().stem().string();
 
-        // Create a TTree
-        TTree t("tree", ("Tree from " + base_name).c_str());
+        // Destination ROOT file path
+        std::string rootPath = outputDir + "/" + baseName + ".root";
 
-        t.ReadFile(csv_file.c_str(), "year/D:month/D:day/D:temperature/D", ',');
+        // Create ROOT file (overwrites if exists)
+        TFile rootFile(rootPath.c_str(), "RECREATE");
 
-        // Write and close
-        t.Write();
-        f.Close();
+        // Create a TTree with a descriptive title
+        TTree tree("tree", ("Tree from " + baseName).c_str());
+
+        //Read CSV directly into TTree
+        tree.ReadFile(csvPath.c_str(), "year/D:month/D:day/D:temperature/D", ',');
+
+        // Write tree to file and close
+        tree.Write();
+        rootFile.Close();
     }
 }
