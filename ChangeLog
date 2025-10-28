@@ -106,6 +106,7 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 2025-10-28 Kacper Opas <ka2557op-s@student.lu.se>
 
-	Documentation added.
+	Documentation added. Made code a bit more reusable.
 
 	* Added doxygen style documentation to most files. 
+	* Added min and max year parameters to diff_in_mean_temp_Lulea_Falsterbo(), mean_temp_January_Lulea(), warmest_vs_coldest_Karlstad()

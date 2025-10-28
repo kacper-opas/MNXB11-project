@@ -9,7 +9,7 @@
  *
  * Produces a bar plot of the temperature difference vs year.
  */
-void diff_in_mean_temp_Lulea_Falsterbo()
+void diff_in_mean_temp_Lulea_Falsterbo(const int yearMin, const int yearMax)
 {
     // Paths to the preprocessed ROOT trees for the two stations
     const std::string falsterboTreePath =
@@ -26,13 +26,11 @@ void diff_in_mean_temp_Lulea_Falsterbo()
     TemperatureData lData(luleaTree);
 
     // Define the year range for the comparison
-    const int startYear = 1950;
-    const int endYear   = 2022;
-    const int nYearBins = endYear - startYear;
+    const int nYearBins = yearMax - yearMin;
 
     // Compute average yearly temperature profiles
-    auto luleaProfile     = lData.calculateMeanProfile("temperature", "year", nYearBins, startYear, endYear);
-    auto falsterboProfile = fData.calculateMeanProfile("temperature", "year", nYearBins, startYear, endYear);
+    auto luleaProfile     = lData.calculateMeanProfile("temperature", "year", nYearBins, yearMin, yearMax);
+    auto falsterboProfile = fData.calculateMeanProfile("temperature", "year", nYearBins, yearMin, yearMax);
 
     // Extract mean values
     const std::vector<double>& luleaAvgTemps     = luleaProfile.first;
@@ -42,7 +40,7 @@ void diff_in_mean_temp_Lulea_Falsterbo()
     std::vector<double> yearCenters;
     yearCenters.reserve(nYearBins);
     for (int i = 0; i < nYearBins; ++i)
-        yearCenters.push_back(startYear + i + 0.5);
+        yearCenters.push_back(yearMin + i + 0.5);
 
     // Compute temperature difference per year:
     // Falsterbo (coastal south Sweden) minus Luleå (northern inland)

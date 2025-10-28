@@ -7,7 +7,7 @@
  * For each year in the dataset, finds the maximum and minimum temperature,
  * computes the difference, and plots it as a bar chart over time.
  */
-void warmest_vs_coldest_Karlstad()
+void warmest_vs_coldest_Karlstad(const int yearMin, const int yearMax)
 {
     // Path to Karlstad preprocessed ROOT tree
     const std::string filename =
@@ -18,8 +18,6 @@ void warmest_vs_coldest_Karlstad()
     TemperatureData data(tree);
 
     // Define year range and number of bins
-    const int yearMin = 1950;
-    const int yearMax = 2024;
     const int nBins = yearMax - yearMin;
 
     // Vectors to store results

@@ -24,19 +24,19 @@
  * @brief Compute and plot the difference in mean yearly temperature
  *        between Luleå and Falsterbo.
  */
-void diff_in_mean_temp_Lulea_Falsterbo();
+void diff_in_mean_temp_Lulea_Falsterbo(const int yearMin, const int yearMax);
 
 /**
  * @brief Compute and plot the mean January temperature in Luleå
  *        for each year in the dataset.
  */
-void mean_temp_January_Lulea();
+void mean_temp_January_Lulea(const int yearMin, const int yearMax);
 
 /**
  * @brief Compute and plot the difference between the warmest
  *        and coldest day for each year in Karlstad.
  */
-void warmest_vs_coldest_Karlstad();
+void warmest_vs_coldest_Karlstad(const int yearMin, const int yearMax);
 
 /**
  * @brief Count and plot which day-of-year is most often the warmest

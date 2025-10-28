@@ -7,7 +7,7 @@
  * Uses a ROOT TTree to extract data and TemperatureData to calculate
  * mean temperatures for each year, filtered for January (month==1).
  */
-void mean_temp_January_Lulea()
+void mean_temp_January_Lulea(const int yearMin, const int yearMax)
 {
     // Path to Luleå preprocessed ROOT tree
     const std::string luleaTreePath =
@@ -18,8 +18,6 @@ void mean_temp_January_Lulea()
     TemperatureData data(tree);
 
     // Define the range of years and number of bins
-    const int yearMin = 1954;
-    const int yearMax = 2024;
     const int nBins = yearMax - yearMin;
 
     // Compute mean January temperatures per year

@@ -38,7 +38,7 @@ void makeBarPlot(const std::vector<double> &x,
     double barWidth = 0.6;
     for (size_t i = 0; i < x.size(); ++i)
     {
-        double ylow  = std::min(baseY, y[i]);
+        double ylow = std::min(baseY, y[i]);
         double yhigh = std::max(baseY, y[i]);
 
         TBox *bar = new TBox(x[i] - barWidth / 2, ylow,
@@ -129,12 +129,12 @@ void makeErrorGraph(const std::vector<double> &x,
                                            ex.data(),
                                            ey.data());
 
-    graph->SetMarkerStyle(20);
-    graph->SetMarkerColor(kBlue);
+    graph->SetMarkerStyle(0); // hide markers
     graph->SetLineColor(kBlue);
     graph->SetLineWidth(2);
+    graph->SetLineColorAlpha(kBlue, 0.5); // slightly lighter line and error bars
 
-    graph->Draw("P same");
+    graph->Draw("L E1 same"); // L=line, E1=vertical error bars without caps
 
     c->SaveAs(savePath.c_str());
 }

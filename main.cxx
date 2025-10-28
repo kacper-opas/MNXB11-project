@@ -15,19 +15,19 @@
 int main()
 {
     // Compare mean temperatures between stations
-    diff_in_mean_temp_Lulea_Falsterbo();
+    diff_in_mean_temp_Lulea_Falsterbo(1950, 2022);
 
     // Mean daily temperatures for Falsterbo
     mean_temp_each_day_Falsterbo();
 
     // Mean January temperatures for Luleå
-    mean_temp_January_Lulea();
+    mean_temp_January_Lulea(1950, 2022);
 
     // Warmest day analysis for Karlstad
     warmest_day_Karlstad();
 
     // Warmest vs coldest day differences for Karlstad
-    warmest_vs_coldest_Karlstad();
+    warmest_vs_coldest_Karlstad(1943, 2022);
 
     return 0;
 }
