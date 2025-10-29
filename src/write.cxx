@@ -10,7 +10,7 @@
  *
  * Output ROOT files are written to `datasets/root_trees` with the same base name.
  */
-void write()
+int main()
 {
     const std::string inputDir  = "datasets/preprocessed_data";
     const std::string outputDir = "datasets/root_trees";
@@ -40,4 +40,6 @@ void write()
         tree.Write();
         rootFile.Close();
     }
+
+    return 0;
 }
