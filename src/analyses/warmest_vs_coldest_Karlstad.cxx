@@ -57,7 +57,7 @@ void warmest_vs_coldest_Karlstad(const int yearMin, const int yearMax)
     makeBarPlot(
         years,
         diffs,
-        "Warmest vs. Coldest day in Karlstad;Year;Temperature difference [°C]",
+        "Warmest vs. Coldest day in Karlstad;Year;Temperature difference [Degrees Celsius]",
         "results/warmest_vs_coldest_Karlstad.png",
         /* baseY = */ 40.0
     );

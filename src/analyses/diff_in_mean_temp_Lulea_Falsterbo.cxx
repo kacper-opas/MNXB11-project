@@ -52,7 +52,7 @@ void diff_in_mean_temp_Lulea_Falsterbo(const int yearMin, const int yearMax)
     makeBarPlot(
         yearCenters,
         tempDifference,
-        "Difference in mean temperature between Lulea and Falsterbo;Year;Temperature difference [°C]",
+        "Difference in mean temperature between Lulea and Falsterbo;Year;Temperature difference [Degrees Celsius]",
         "results/diff_in_mean_temp_Lulea_Falsterbo.png",
         /* baseY = */ 0.0
     );
