@@ -41,7 +41,7 @@ void mean_temp_January_Lulea(const int yearMin, const int yearMax)
     makeBarPlot(
         years,
         meanJanuaryTemps,
-        "Mean January temperature in Lulea;Year;Mean Temperature [°C]",
+        "Mean January temperature in Lulea;Year;Mean Temperature [Degrees Celsius]",
         "results/mean_temp_January_Lulea.png",
         /* baseY = */ 0.0
     );
