@@ -110,3 +110,17 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 	* Added doxygen style documentation to most files. 
 	* Added min and max year parameters to diff_in_mean_temp_Lulea_Falsterbo(), mean_temp_January_Lulea(), warmest_vs_coldest_Karlstad()
+
+2025-10-27 Kyra Bohnen <kyrabohnen@gmail.com>
+
+	Wrote the common parts of the report 
+
+	*Introduction and Conclusion
+	*Writing about the header files used in all the analysis
+	*preprocessing
+
+2025-10-28 Kyra Bohnen <kyrabohnen@gmail.com>
+
+	Wrote the analysis for warmest day in karlstad in report 
+
+	*explain code
