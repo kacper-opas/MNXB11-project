@@ -15,7 +15,7 @@ INCLUDES := -I include
 
 # ROOT flags
 ROOTCFLAGS := $(shell root-config --cflags)   # ROOT compiler flags
-ROOTLIBS := $(shell root-config --libs)       # ROOT linker flags
+ROOTLIBS   := $(shell root-config --libs)     # ROOT linker flags
 
 # Combine all compiler flags
 CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES) $(ROOTCFLAGS)
@@ -23,8 +23,8 @@ CXXFLAGS := $(CXXWARNINGS) $(CXXSTD) $(CXXOPT) $(INCLUDES) $(ROOTCFLAGS)
 # Linker flags (ROOT libraries)
 LDFLAGS := $(ROOTLIBS)
 
-# List of all source files
-SRCS := \
+# Source files for main program
+MAIN_SRCS := \
 	main.cxx \
 	src/analyses/diff_in_mean_temp_Lulea_Falsterbo.cxx \
 	src/analyses/mean_temp_each_day_Falsterbo.cxx \
@@ -34,23 +34,28 @@ SRCS := \
 	src/plotting_utils.cxx \
 	src/analysis_utils.cxx
 
-# Object files corresponding to sources
-OBJS := $(SRCS:.cxx=.o)
+# Object files
+MAIN_OBJS := $(MAIN_SRCS:.cxx=.o)
+WRITE_OBJS := src/write.o
 
-# Phony targets (not actual files)
+# Phony targets
 .PHONY: all clean
 
-# Default target
-all: main
+# Default target: build both executables
+all: main write
 
-# Link the executable
-main: $(OBJS)
+# Build the main executable
+main: $(MAIN_OBJS)
+	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
+
+# Build the write executable
+write: $(WRITE_OBJS)
 	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
 
 # Generic rule: compile .cxx -> .o
 %.o: %.cxx
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-# Remove build artifacts
+# Clean up build artifacts
 clean:
-	rm -fv $(OBJS) main
+	rm -fv $(MAIN_OBJS) $(WRITE_OBJS) main write

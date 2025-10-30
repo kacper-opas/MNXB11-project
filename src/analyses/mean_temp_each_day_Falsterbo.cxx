@@ -60,7 +60,7 @@ void mean_temp_each_day_Falsterbo()
     // Draw error graph: mean ± standard error for each day
     makeErrorGraph(
         x, means, ex, errors,
-        "Mean temperature on each day of the year in Falsterbo;Day of the year;Mean Temperature [C]",
+        "Mean temperature on each day of the year in Falsterbo;Day of the year;Mean Temperature [Degrees Celsius]",
         "results/mean_temp_each_day_Falsterbo.png"
     );
 }

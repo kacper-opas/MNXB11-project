@@ -123,4 +123,9 @@ YYYY-MM-DD Name LastName  <email@somewhere>
 
 	Wrote the analysis for warmest day in karlstad in report 
 
-	*explain code
+2025-10-29 Andrea Delic <andreadelic15@gmail.com>
+
+	Redid the labels.
+
+	* Rewrote the labels in each analysis code since it wasn't updated correctly on github.
+
