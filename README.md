@@ -1,9 +1,9 @@
 # Data preparation
 
 -Extract the SMHI csv files and place them in datasets/raw
--Run the preprocessing scripts 
+-Run the preprocessing via the wrapper script to preprocess all files 
 ``` sh
-bash preprocess.sh < filename.csv >
+bash preprocessingwrapper.sh
 ```
 # Compiling the code
 The project uses C++17 and ROOT, in order to compile the code run
